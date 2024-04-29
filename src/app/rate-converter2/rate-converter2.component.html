@@ -1,0 +1,24 @@
+<p>rate-converter2 works!</p>
+<form [formGroup]="form">
+  <div>
+    <label for="currency">Select Currency:</label>
+    <select formControlName="selectedCurrency">
+      <option value="" disabled selected>Choose currency</option>
+      <option *ngFor="let currency of currencies" [value]="currency.name">
+        {{ currency.name }}
+      </option>
+    </select>
+  </div>
+  <div>
+    <label for="amountPLN">Exchange rate:</label>
+    <div></div>
+  </div>
+  <div>
+    <label for="amountPLN">Amount in PLN:</label>
+    <input type="number" formControlName="amountPLN" />
+  </div>
+  <div>
+    <label for="amountForeign">Amount in Selected Currency:</label>
+    <input type="number" formControlName="amountForeign" />
+  </div>
+</form>
