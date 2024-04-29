@@ -9,8 +9,14 @@ import {
 import { Currency, RateService } from '../rate.service';
 import { Subject, takeUntil } from 'rxjs';
 
+// ------------------------------------------------------------
+// Changing currency at the end doesn't recalculates values
+// 1. not required
+// 2. additional considerations needed, i.e. which amount should be taken, etc.
+// ------------------------------------------------------------
+
 @Component({
-  selector: 'app-rate-converter2',
+  selector: 'rate-converter',
   standalone: true,
   imports: [ReactiveFormsModule, NgForOf, NgIf, AsyncPipe],
   templateUrl: './rate-converter.component.html',
