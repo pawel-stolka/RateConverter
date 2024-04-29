@@ -20,7 +20,7 @@ export class RateConverterComponent implements OnInit, OnDestroy {
   form: FormGroup;
   currencies: Currency[] = [];
   MAX_AMOUNT = this.rateService.MAX_AMOUNT;
-
+  showCurrencyList = false;
   private destroy$ = new Subject<void>(); // instead of | async
 
   get selectedCurrency() {
@@ -81,6 +81,10 @@ export class RateConverterComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  toggleCurrencyList() {
+    this.showCurrencyList = !this.showCurrencyList;
   }
 
   private updateForeignAmount(rate: number): void {

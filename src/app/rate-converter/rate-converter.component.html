@@ -30,3 +30,15 @@
     <input type="number" formControlName="amountForeign" />
   </div>
 </form>
+
+<button type="button" (click)="toggleCurrencyList()">
+  {{ showCurrencyList ? 'Hide' : 'Show' }} Currency List
+</button>
+
+<div *ngIf="showCurrencyList" class="currency-list">
+  <ol>
+    <li *ngFor="let currency of currencies">
+      {{ currency.name }} - {{ currency.rate }}
+    </li>
+  </ol>
+</div>
