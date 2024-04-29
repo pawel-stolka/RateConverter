@@ -14,16 +14,18 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'rate-exchange' title`, () => {
+  it(`should have the 'rate converter' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('rate-exchange');
+    expect(app.title).toEqual('rate converter');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, rate-exchange');
+    expect(compiled.querySelector('h1')?.textContent).toContain(
+      'rate converter'
+    );
   });
 });

@@ -1,7 +1,12 @@
-<p>rate-converter2 works!</p>
+<div class="messages">
+  <div class="error" *ngIf="amountPLN?.errors?.['max']">
+    Maximum allowed amount is {{ MAXIMUM_AMOUNT }} PLN.
+  </div>
+</div>
+
 <form [formGroup]="form">
   <div>
-    <label for="currency">Select Currency:</label>
+    <label for="currency">Select Currency</label>
     <select formControlName="selectedCurrency">
       <option value="" disabled selected>Choose currency</option>
       <option *ngFor="let currency of currencies" [value]="currency.name">
@@ -9,16 +14,16 @@
       </option>
     </select>
   </div>
-  <div>
-    <label for="amountPLN">Exchange rate:</label>
-    <div></div>
+  <div class="rate">
+    <label>Exchange rate</label>
+    <span>{{ getCurrentRate() }}</span>
   </div>
   <div>
-    <label for="amountPLN">Amount in PLN:</label>
+    <label>PLN</label>
     <input type="number" formControlName="amountPLN" />
   </div>
-  <div>
-    <label for="amountForeign">Amount in Selected Currency:</label>
+  <div *ngIf="!amountPLN?.errors?.['max']">
+    <label>Currency</label>
     <input type="number" formControlName="amountForeign" />
   </div>
 </form>

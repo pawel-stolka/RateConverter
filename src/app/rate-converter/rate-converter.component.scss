@@ -1,0 +1,72 @@
+$normal: 16px;
+$red: red;
+$grey: #ccc;
+$light-grey: #f8f9fa;
+
+:host {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid $grey;
+  border-radius: 8px;
+}
+
+.messages {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  .error {
+    color: $red;
+    border: 3px solid $red;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+form {
+  div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 10px;
+    align-items: center;
+    height: 40px;
+
+    label {
+      font-weight: bold;
+    }
+
+    input,
+    select {
+      border: 1px solid $grey;
+      border-radius: 4px;
+      height: 35px;
+      text-align: center;
+      font-size: $normal;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .rate {
+    margin: 10px;
+
+    span {
+      height: 22px;
+      padding: 8px;
+
+      background-color: $light-grey;
+      border: 1px solid $grey;
+      border-radius: 4px;
+      text-align: center;
+      font-size: $normal;
+      font-weight: bold;
+    }
+  }
+}
