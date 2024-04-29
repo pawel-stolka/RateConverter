@@ -1,28 +1,27 @@
-import { NgForOf, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Currency, RateService } from '../rate.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-rate-converter2',
   standalone: true,
-  imports: [ReactiveFormsModule, NgForOf, NgIf],
+  imports: [ReactiveFormsModule, NgForOf, NgIf, AsyncPipe],
   templateUrl: './rate-converter.component.html',
   styleUrl: './rate-converter.component.scss',
 })
-export class RateConverterComponent {
+export class RateConverterComponent implements OnInit, OnDestroy {
   form: FormGroup;
-  currencies = [
-    { name: 'USD', rate: 0.25 },
-    { name: 'EUR', rate: 0.22 },
-    { name: 'GBP', rate: 0.18 },
-  ];
+  currencies: Currency[] = [];
+  MAX_AMOUNT = this.rateService.MAX_AMOUNT;
 
-  MAXIMUM_AMOUNT = 10_000;
+  private destroy$ = new Subject<void>(); // instead of | async
 
   get selectedCurrency() {
     return this.form.get('selectedCurrency');
@@ -43,10 +42,14 @@ export class RateConverterComponent {
     return currency ? currency.rate.toFixed(2) : '';
   }
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private rateService: RateService) {
+    const { MIN_AMOUNT } = rateService;
     this.form = this.fb.group({
       selectedCurrency: [null],
-      amountPLN: [null, [Validators.max(this.MAXIMUM_AMOUNT)]],
+      amountPLN: [
+        null,
+        [Validators.min(MIN_AMOUNT), Validators.max(this.MAX_AMOUNT)],
+      ],
       amountForeign: [null],
     });
 
@@ -64,6 +67,20 @@ export class RateConverterComponent {
         this.updatePLNAmount(rate);
       }
     });
+  }
+
+  ngOnInit() {
+    this.rateService
+      .getCurrencies()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((currencies) => {
+        this.currencies = currencies;
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private updateForeignAmount(rate: number): void {

@@ -1,6 +1,9 @@
 <div class="messages">
   <div class="error" *ngIf="amountPLN?.errors?.['max']">
-    Maximum allowed amount is {{ MAXIMUM_AMOUNT }} PLN.
+    Maximum allowed amount is {{ MAX_AMOUNT }} PLN.
+  </div>
+  <div class="error" *ngIf="amountPLN?.errors?.['min']">
+    Negative amount is not allowed.
   </div>
 </div>
 
@@ -22,7 +25,7 @@
     <label>PLN</label>
     <input type="number" formControlName="amountPLN" />
   </div>
-  <div *ngIf="!amountPLN?.errors?.['max']">
+  <div *ngIf="!amountPLN?.errors?.['max'] && !amountPLN?.errors?.['min']">
     <label>Currency</label>
     <input type="number" formControlName="amountForeign" />
   </div>
