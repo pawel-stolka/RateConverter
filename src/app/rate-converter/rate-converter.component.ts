@@ -48,6 +48,21 @@ export class RateConverterComponent implements OnInit, OnDestroy {
     return currency ? currency.rate.toFixed(2) : '';
   }
 
+  get selectedCurrencyName(): string {
+    const currency = this.currencies.find(
+      ({ name }) => name === this.selectedCurrency?.value
+    );
+    return currency?.name ?? 'Currency';
+  }
+
+  get selectedCurrencySymbol(): string {
+    const currency = this.currencies.find(
+      ({ name }) => name === this.selectedCurrency?.value
+    );
+
+    return currency?.symbol ?? '';
+  }
+
   constructor(private fb: FormBuilder, private rateService: RateService) {
     const { MIN_AMOUNT } = rateService;
     this.form = this.fb.group({

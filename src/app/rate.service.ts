@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 export interface Currency {
   name: string;
   rate: number;
+  symbol?: string;
 }
 
 @Injectable({
@@ -11,9 +12,11 @@ export interface Currency {
 })
 export class RateService {
   private currencies = [
-    { name: 'USD', rate: 0.25 },
-    { name: 'EUR', rate: 0.22 },
-    { name: 'GBP', rate: 0.18 },
+    { name: 'USD', rate: 0.25, symbol: '$' },
+    { name: 'EUR', rate: 0.22, symbol: '€' },
+    { name: 'GBP', rate: 0.18, symbol: '£' },
+    { name: 'YPY', rate: 0.026, symbol: '¥' },
+    { name: 'HRK', rate: 1.74 },
   ];
 
   MIN_AMOUNT = 0;
