@@ -23,10 +23,21 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './rate-converter.component.scss',
 })
 export class RateConverterComponent implements OnInit, OnDestroy {
-  form: FormGroup;
-  currencies: Currency[] = [];
+  MIN_AMOUNT = this.rateService.MIN_AMOUNT;
   MAX_AMOUNT = this.rateService.MAX_AMOUNT;
+
+  form: FormGroup = this.fb.group({
+    selectedCurrency: [null],
+    amountPLN: [
+      null,
+      [Validators.min(this.MIN_AMOUNT), Validators.max(this.MAX_AMOUNT)],
+    ],
+    amountForeign: [null],
+  });
+
+  currencies: Currency[] = [];
   showCurrencyList = false;
+
   private destroy$ = new Subject<void>(); // instead of | async
 
   get selectedCurrency() {
@@ -41,13 +52,6 @@ export class RateConverterComponent implements OnInit, OnDestroy {
     return this.form.get('amountForeign');
   }
 
-  getCurrentRate(): string {
-    const currency = this.currencies.find(
-      ({ name }) => name === this.selectedCurrency?.value
-    );
-    return currency ? currency.rate.toFixed(2) : '';
-  }
-
   get selectedCurrencyName(): string {
     const currency = this.currencies.find(
       ({ name }) => name === this.selectedCurrency?.value
@@ -59,21 +63,10 @@ export class RateConverterComponent implements OnInit, OnDestroy {
     const currency = this.currencies.find(
       ({ name }) => name === this.selectedCurrency?.value
     );
-
     return currency?.symbol ?? '';
   }
 
   constructor(private fb: FormBuilder, private rateService: RateService) {
-    const { MIN_AMOUNT } = rateService;
-    this.form = this.fb.group({
-      selectedCurrency: [null],
-      amountPLN: [
-        null,
-        [Validators.min(MIN_AMOUNT), Validators.max(this.MAX_AMOUNT)],
-      ],
-      amountForeign: [null],
-    });
-
     this.form.valueChanges.subscribe(({ selectedCurrency }) => {
       if (!selectedCurrency) return;
 
@@ -92,7 +85,7 @@ export class RateConverterComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.rateService
-      .getCurrencies()
+      .getCurrencies$()
       .pipe(takeUntil(this.destroy$))
       .subscribe((currencies) => {
         this.currencies = currencies;
@@ -102,6 +95,13 @@ export class RateConverterComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  getCurrentRate(): string {
+    const currency = this.currencies.find(
+      ({ name }) => name === this.selectedCurrency?.value
+    );
+    return currency ? currency.rate.toFixed(2) : '';
   }
 
   toggleCurrencyList() {

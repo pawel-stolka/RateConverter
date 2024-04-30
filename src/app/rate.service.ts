@@ -24,7 +24,7 @@ export class RateService {
 
   constructor(/*private http: HttpClient*/) {} // extendable in future...
 
-  getCurrencies(): Observable<Currency[]> {
+  getCurrencies$(): Observable<Currency[]> {
     // TODO: to be replaced with with HTTP request (via i.e. Observables)
     return of(this.currencies);
   }
