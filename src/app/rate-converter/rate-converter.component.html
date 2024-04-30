@@ -23,11 +23,17 @@
   </div>
   <div>
     <label>PLN</label>
-    <input type="number" formControlName="amountPLN" />
+    <div>
+      <input type="number" formControlName="amountPLN" />
+      <div class="suffix">zł</div>
+    </div>
   </div>
   <div *ngIf="!amountPLN?.errors?.['max'] && !amountPLN?.errors?.['min']">
-    <label>Currency</label>
-    <input type="number" formControlName="amountForeign" />
+    <label>{{ selectedCurrencyName }}</label>
+    <div>
+      <input type="number" formControlName="amountForeign" />
+      <div class="suffix">{{ selectedCurrencySymbol }}</div>
+    </div>
   </div>
 </form>
 
@@ -36,9 +42,10 @@
 </button>
 
 <div *ngIf="showCurrencyList" class="currency-list">
-  <ol>
+  <ul>
     <li *ngFor="let currency of currencies">
-      {{ currency.name }} - {{ currency.rate }}
+      {{ currency.name }} => 1 zł = {{ currency.rate }}
+      {{ currency?.symbol ?? currency.name }}
     </li>
-  </ol>
+  </ul>
 </div>
